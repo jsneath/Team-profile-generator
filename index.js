@@ -12,7 +12,7 @@ const render = require("./src/page-template.js");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
-
+const teamMembers = [];
 
 function createTeamMember() {
   
@@ -25,6 +25,7 @@ function createTeamMember() {
         }
     ]).then((answers) => {
         if (answers.role === 'Exit') {
+            buildTeam();
             // Finish the process or build the output (like generating an HTML file)
             return;
         }
@@ -70,12 +71,21 @@ function createTeamMember() {
                 member = new Intern(moreAnswers.name, moreAnswers.id, moreAnswers.email, moreAnswers.school);
             }
 
-            // TODO: Store the created member object in an array or similar structure
-            // You might also want to call createTeamMember again to add more members
-
-           // Recursive call to add more team members
+            teamMembers.push(member);
+            createTeamMember();
+   
         });
     });
+}
+
+function buildTeam() {
+    // Check if output directory exists, if not, create it
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR);
+    }
+
+    // Call the render function and write the HTML to a file
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
 }
 
 function init() {
