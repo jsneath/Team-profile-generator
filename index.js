@@ -26,7 +26,7 @@ function createTeamMember() {
     ]).then((answers) => {
         if (answers.role === 'Exit') {
             buildTeam();
-            // Finish the process or build the output (like generating an HTML file)
+ 
             return;
         }
 
